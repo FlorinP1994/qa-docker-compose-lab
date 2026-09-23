@@ -1,0 +1,218 @@
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~
+$ git clone https://github.com/FlorinP1994/qa-docker-compose-lab
+Cloning into 'qa-docker-compose-lab'...
+warning: You appear to have cloned an empty repository.
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~
+$ cd qa-docker-compose-lab
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ git status
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ code .
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker ps -a
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker ps -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED        STATUS                    PORTS     NAMES
+0a2365f3ecba   postgres:16.2-alpine   "docker-entrypoint.s…"   46 hours ago   Exited (0) 44 hours ago             my-postgres
+51706ea3a551   hello-world            "/hello"                 3 days ago     Exited (0) 3 days ago               eager_elion
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker rm my-postgres eager_elion
+my-postgres
+eager_elion
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker images
+                                                                                                                                                                                               i Info →   U  In Use
+IMAGE                  ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest     5e2309035332       25.9kB         9.49kB
+postgres:16.2-alpine   951bfda46030        349MB         96.7MB
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker rmi hello-world:latest postgres:16.2-alpine
+Untagged: hello-world:latest
+Deleted: sha256:5e23090353324d887c48ad5e5c56d294eab81588df9605b07d1afe895f9cc8f8
+Untagged: postgres:16.2-alpine
+Deleted: sha256:951bfda460300925caa3949eaa092ba022e9aec191bbea9056a39e2382260b27
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker images
+                                                                                                                                                                                               i Info →   U  In Use
+IMAGE   ID             DISK USAGE   CONTENT SIZE   EXTRA
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+[+] up 46/46pose up -d
+ ✔ Image postgres:16-alpine                  Pulled                                                                                                                                                           15.5s
+ ✔ Image adminer:latest                      Pulled                                                                                                                                                           11.8s
+ ✔ Image redis:7-alpine                      Pulled                                                                                                                                                           10.5s
+ ✔ Network qa-docker-compose-lab_default     Created                                                                                                                                                           0.0s
+ ✔ Volume qa-docker-compose-lab_db-data      Created                                                                                                                                                           0.0s
+ ✘ Container qa-docker-compose-lab-db-1      Error dependency db failed to start                                                                                                                               1.2s
+ ✔ Container qa-docker-compose-lab-cache-1   Started                                                                                                                                                           0.9s
+ ✔ Container qa-docker-compose-lab-adminer-1 Created                                                                                                                                                           0.1s
+dependency failed to start: container qa-docker-compose-lab-db-1 exited (1)
+
+What's next:
+    Debug this Compose error with Gordon → docker ai "help me fix this compose error"
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose logs db
+db-1  | Error: Database is uninitialized and superuser password is not specified.
+db-1  |        You must specify POSTGRES_PASSWORD to a non-empty value for the
+db-1  |        superuser. For example, "-e POSTGRES_PASSWORD=password" on "docker run".
+db-1  |
+db-1  |        You may also use "POSTGRES_HOST_AUTH_METHOD=trust" to allow all
+db-1  |        connections without a password. This is *not* recommended.
+db-1  |
+db-1  |        See PostgreSQL documentation about "trust":
+db-1  |        https://www.postgresql.org/docs/current/auth-trust.html
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose -a
+unknown shorthand flag: 'a' in -a
+
+What's next:
+    Debug this Compose error with Gordon → docker ai "help me fix this compose error"
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose ps -a
+NAME                              IMAGE                COMMAND                  SERVICE   CREATED         STATUS                     PORTS
+qa-docker-compose-lab-adminer-1   adminer:latest       "entrypoint.sh docke…"   adminer   6 minutes ago   Created
+qa-docker-compose-lab-cache-1     redis:7-alpine       "docker-entrypoint.s…"   cache     6 minutes ago   Up 6 minutes               6379/tcp
+qa-docker-compose-lab-db-1        postgres:16-alpine   "docker-entrypoint.s…"   db        6 minutes ago   Exited (1) 6 minutes ago
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker ps -a
+CONTAINER ID   IMAGE                COMMAND                  CREATED         STATUS                     PORTS      NAMES
+dbf745298ad4   adminer:latest       "entrypoint.sh docke…"   6 minutes ago   Created                               qa-docker-compose-lab-adminer-1
+02b820ce969b   postgres:16-alpine   "docker-entrypoint.s…"   6 minutes ago   Exited (1) 6 minutes ago              qa-docker-compose-lab-db-1
+c9d8f56f3302   redis:7-alpine       "docker-entrypoint.s…"   6 minutes ago   Up 6 minutes               6379/tcp   qa-docker-compose-lab-cache-1
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose down -v
+[+] down 5/5
+ ✔ Container qa-docker-compose-lab-adminer-1 Removed                                                                                                                                                           0.0s
+ ✔ Container qa-docker-compose-lab-cache-1   Removed                                                                                                                                                           0.2s
+ ✔ Container qa-docker-compose-lab-db-1      Removed                                                                                                                                                           0.0s
+ ✔ Network qa-docker-compose-lab_default     Removed                                                                                                                                                           0.2s
+ ✔ Volume qa-docker-compose-lab_db-data      Removed                                                                                                                                                           0.0s
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose ps -a
+NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose up -d
+[+] up 5/5
+ ✔ Network qa-docker-compose-lab_default     Created                                                                                                                                                           0.0s
+ ✔ Volume qa-docker-compose-lab_db-data      Created                                                                                                                                                           0.0s
+ ✔ Container qa-docker-compose-lab-cache-1   Started                                                                                                                                                           0.4s
+ ✔ Container qa-docker-compose-lab-db-1      Healthy                                                                                                                                                           6.1s
+ ✔ Container qa-docker-compose-lab-adminer-1 Started                                                                                                                                                           6.2s
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose ps
+NAME                              IMAGE                COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+qa-docker-compose-lab-adminer-1   adminer:latest       "entrypoint.sh docke…"   adminer   About a minute ago   Up 54 seconds                 0.0.0.0:8888->8080/tcp, [::]:8888->8080/tcp
+qa-docker-compose-lab-cache-1     redis:7-alpine       "docker-entrypoint.s…"   cache     About a minute ago   Up About a minute             6379/tcp
+qa-docker-compose-lab-db-1        postgres:16-alpine   "docker-entrypoint.s…"   db        About a minute ago   Up About a minute (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ touch REZOLVARE.md
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ code REZOLVARE.md
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ pwd
+/c/Users/puiu_/qa-docker-compose-lab
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ git status
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        Postgres1.png
+        Postgres2.png
+        REZOLVARE.md
+        compose.yaml
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ git add .
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ git status
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   Postgres1.png
+        new file:   Postgres2.png
+        new file:   REZOLVARE.md
+        new file:   compose.yaml
+
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ git commit -m "feat: Adauga configuratia Docker Compose si rezolvarea"
+[main (root-commit) 5609dd4] feat: Adauga configuratia Docker Compose si rezolvarea
+ 4 files changed, 37 insertions(+)
+ create mode 100644 Postgres1.png
+ create mode 100644 Postgres2.png
+ create mode 100644 REZOLVARE.md
+ create mode 100644 compose.yaml
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ git push -u origin main
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 70.21 KiB | 23.40 MiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/FlorinP1994/qa-docker-compose-lab
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ docker compose down -v
+[+] down 5/5
+ ✔ Container qa-docker-compose-lab-cache-1   Removed                                                                                                                                                           0.4s
+ ✔ Container qa-docker-compose-lab-adminer-1 Removed                                                                                                                                                           0.3s
+ ✔ Container qa-docker-compose-lab-db-1      Removed                                                                                                                                                           0.3s
+ ✔ Network qa-docker-compose-lab_default     Removed                                                                                                                                                           0.2s
+ ✔ Volume qa-docker-compose-lab_db-data      Removed                                                                                                                                                           0.0s
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ touch COMENZI_BASH.txt
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ code COM
+COMENZI_BASH.txt  compose.yaml
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
+$ code COMENZI_BASH.txt
+
+puiu_@DESKTOP-T9IACLI MINGW64 ~/qa-docker-compose-lab (main)
